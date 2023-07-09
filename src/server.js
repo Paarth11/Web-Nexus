@@ -3,6 +3,7 @@ const path = require('path')
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
+const users = require('./routes/userRouter')
 
 app.listen(process.env.PORT,()=>{
     console.log(`connected to port ${process.env.PORT}`)
@@ -20,6 +21,9 @@ app.use(express.urlencoded({extended: false}))
 app.use(express.json()) 
 
 
-app.get('/',(req,res)=>{
+ app.use('/users',users)
+
+ 
+ app.get('/',(req,res)=>{
     res.render('home')
 })
