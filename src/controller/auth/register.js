@@ -5,5 +5,4 @@ const register = async (req, res) => {
   await User.create({ fullName, email, password });
   res.redirect('/signin');
 };
-
 module.exports = register;
