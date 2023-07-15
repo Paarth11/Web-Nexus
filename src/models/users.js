@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const {Schema,model} = require('mongoose');
 const { randomBytes, createHmac } = require('crypto');
-const { crateTokenForUser } = require('../services/authentication');
+const { createTokenForUser } = require('../services/authentication');
 
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
     fullName: {
       type: String,
@@ -40,7 +40,7 @@ userSchema.pre('save', function (next) {
 
   const salt = randomBytes(16).toString();
   const hashedPassword = createHmac('sha256', salt)
-    .update(user.password)
+    .update(user.password) 
     .digest('hex');
 
   this.salt = salt;
@@ -62,10 +62,10 @@ userSchema.static('matchPasswordAndGenerateToken', async function (email, passwo
 
   if (hashedPassword !== userProvidedHash)
     throw new Error('Password is incorrect');
-    
-  const token = crateTokenForUser(user);
+
+  const token = createTokenForUser(user); 
   return token;
 
 });
-const User = mongoose.model('user', userSchema);
+const User = model('user', userSchema);
 module.exports = User;

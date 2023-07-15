@@ -1,20 +1,21 @@
 require('dotenv').config()
-const secret = process.env.SECRET_KEY
-const JWT = require('jsonwebtoken')
+const JWT = require('jsonwebtoken'); 
+const secret = process.env.TOKEN_SECRET;
 
-function crateTokenForUser(user){
-    const payLoad = {
-        _id: user._id,
-        email: user.email,
-        role: user.role,
-    };
-    const token = JWT.sign(payLoad,secret)
-    return token;  
-    }
-function validateToken(token){
-    const payLoad = JWT.verify(token,secret)
-    return payLoad;
+function createTokenForUser(user) {
+  const payLoad = {
+    _id: user._id,
+    email: user.email,
+    profileImageUrl: user.profileImageUrl,
+    role: user.role,
+  };
+  const token = JWT.sign(payLoad,secret); // this is the token
+  return token;
 }
-module.exports = { crateTokenForUser, validateToken}
 
+function validateToken(token) {
+  const payLoad = JWT.verify(token, secret); 
+  return payLoad; 
+}
 
+module.exports = { createTokenForUser, validateToken };

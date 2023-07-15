@@ -18,10 +18,10 @@ app.set('view engine','ejs')
 app.set('views',path.join(__dirname,'/views'))
 
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json())
 app.use(cookieParser())
 app.use(checkForAuthenticationCookie('token'))
 app.use(express.static(path.join(__dirname,'/public')))
-
 
  app.use('/users',users)
 
