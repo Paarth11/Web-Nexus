@@ -9,22 +9,34 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Add Blog</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Sign Up</a>
-          </li>
-          
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-               Paarth Jung Thapa 
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">LogOut</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+          <% if (locals.user) { %>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Add Blog</a>
+            </li>
+            <li class="nav-item dropdown">
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">  <% locals.user.role %></a></li>
+                <li><a class="dropdown-item" href="#">  LogOut </a></li>
+              </ul> 
+              <% } else { %>
+                <li class="nav-item">
+                  <a class="nav-link" href="/users/signup">Sign Up</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/users/signin">Sign In</a>
+                </li>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">LogOut</a></li>
+                  </ul> 
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+          <% } %>
+          <% if (locals.error) { %>
+            <div class="container mt-4">
+            <div class="alert alert-danger" role="alert">
+            <%= locals.error %>
+            </div> 
+          <% } %>

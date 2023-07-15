@@ -9,13 +9,12 @@ function crateTokenForUser(user){
         role: user.role,
     };
     const token = JWT.sign(payLoad,secret)
-    return token;
+    return token;  
     }
 function validateToken(token){
     const payLoad = JWT.verify(token,secret)
     return payLoad;
 }
-
 module.exports = { crateTokenForUser, validateToken}
 
 

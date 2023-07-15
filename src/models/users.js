@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const { randomBytes, createHmac } = require('crypto');
 const { crateTokenForUser } = require('../services/authentication');
 
+
 const userSchema = new mongoose.Schema(
   {
     fullName: {
@@ -20,52 +21,51 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    profileImageURL: {
+    profileImageUrl: {
       type: String,
       default: '/images/default.png',
     },
     role: {
       type: String,
-      enum: ['USER', 'ADMIN'],
+      emun: ['ADMIN', 'USER'],
       default: 'USER',
     },
   },
   { timestamps: true }
-);
+); 
 
 userSchema.pre('save', function (next) {
-  const user = this;
-  if (!user.isModified('password')) return next;
+  const user = this; 
+  if (!user.isModified('password')) return;  
 
   const salt = randomBytes(16).toString();
   const hashedPassword = createHmac('sha256', salt)
     .update(user.password)
     .digest('hex');
 
-  user.password = hashedPassword;
-  user.salt = salt;
+  this.salt = salt;
+  this.password = hashedPassword;
+
+  next();
 });
 
-userSchema.static(
-  'matchPasswordAndGenerateToken',
-  async function (email, password) {
-    const user = await this.findOne({ email });
-    if (!user) throw new Error('USER NOT FOUND');
+userSchema.static('matchPasswordAndGenerateToken', async function (email, password) {
+  const user = await this.findOne({ email });
+  if (!user) throw new Error('User not found');
 
-    const salt = user.salt;
-    const hashedPassword = user.hashedPassword;
+  const salt = user.salt;
+  const hashedPassword = user.password;
 
-    const userPorvidedPassword = createHmac('sha256', salt)
-      .update(password)
-      .digest('hex');
+  const userProvidedHash = createHmac('sha256', salt)
+    .update(password)
+    .digest('hex');
 
-    if (!hashedPassword == userPorvidedPassword)
-      throw new Error('PASSWORD NOT MATCHED');
+  if (hashedPassword !== userProvidedHash)
+    throw new Error('Password is incorrect');
+    
+  const token = crateTokenForUser(user);
+  return token;
 
-    const token = crateTokenForUser(user);
-    return token;
-  }
-);
-
+});
 const User = mongoose.model('user', userSchema);
 module.exports = User;
