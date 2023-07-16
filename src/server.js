@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const users = require('./routes/userRouter')
 const blogs = require('./routes/blogRouter')
 const checkForAuthenticationCookie = require('./middleware/checkAuth')
+const Blog = require('./models/blog')
 
 app.listen(process.env.PORT,()=>{
     console.log(`connected to port ${process.env.PORT}`)
@@ -27,6 +28,12 @@ app.use(express.static(path.join(__dirname,'/public')))
  app.use('/users',users)
  app.use('/blogs',blogs)
 
- app.get('/',(req,res)=>{
-    res.render('home')
-})
+ app.get('/', async (req, res) => {
+    const allBlogs = await Blog.find({});
+    res.render('home', {
+      user: req.user,
+      blogs: allBlogs,
+  
+    });
+  });
+  
