@@ -5,6 +5,7 @@ const app = express()
 const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
 const users = require('./routes/userRouter')
+const blogs = require('./routes/blogRouter')
 const checkForAuthenticationCookie = require('./middleware/checkAuth')
 
 app.listen(process.env.PORT,()=>{
@@ -24,6 +25,7 @@ app.use(checkForAuthenticationCookie('token'))
 app.use(express.static(path.join(__dirname,'/public')))
 
  app.use('/users',users)
+ app.use('/blogs',blogs)
 
  app.get('/',(req,res)=>{
     res.render('home')
