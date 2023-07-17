@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname,'/public')))
     const allBlogs = await Blog.find({});
     res.render('home', {
       user: req.user, 
-      blogs: allBlogs,
+      blogs: allBlogs, 
       
   
     });
