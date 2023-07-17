@@ -2,10 +2,10 @@ require('dotenv').config()
 const path = require('path')
 const express = require('express')
 const app = express()
-const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
 const users = require('./routes/userRouter')
 const blogs = require('./routes/blogRouter')
+const cookieParser = require('cookie-parser')
 const checkForAuthenticationCookie = require('./middleware/checkAuth')
 const Blog = require('./models/blog')
 
@@ -27,11 +27,12 @@ app.use(express.static(path.join(__dirname,'/public')))
 
  app.use('/users',users)
  app.use('/blogs',blogs)
+ 
 
  app.get('/', async (req, res) => {
     const allBlogs = await Blog.find({});
     res.render('home', {
-      user: req.user,
+      user: req.user, 
       blogs: allBlogs,
   
     });

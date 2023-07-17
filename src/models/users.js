@@ -68,5 +68,5 @@ userSchema.static(
     return token;
   }
 );
-const User = model('user', userSchema);
+const User = model('users', userSchema);
 module.exports = User;

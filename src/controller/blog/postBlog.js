@@ -8,6 +8,6 @@ const postBlog = async (req, res) => {
     CreatedBy: req.user._id,
     coverImageUrl: `/uploads/${req.file.filename}`,
   });
-  return res.redirect(`/blog/${blog._id}`);
+  return res.redirect(`/blogs/${blog._id}`);
 };
 module.exports = postBlog;
