@@ -34,6 +34,7 @@ app.use(express.static(path.join(__dirname,'/public')))
     res.render('home', {
       user: req.user, 
       blogs: allBlogs,
+      
   
     });
   });
